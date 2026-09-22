@@ -1,0 +1,29 @@
+{
+  "name": "parcial1-AppsHibridas",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon main.js",
+    "start": "node main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^11.9.0",
+      "onFail": "download"
+    }
+  },
+  "type": "module",
+  "dependencies": {
+    "express": "^5.2.1",
+    "mongodb": "^7.6.0"
+  },
+  "devDependencies": {
+    "csv-parse": "^7.0.2",
+    "nodemon": "^3.1.14"
+  }
+}
