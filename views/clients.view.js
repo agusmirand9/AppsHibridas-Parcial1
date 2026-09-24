@@ -45,14 +45,7 @@ export function newClientForm() {
             <a href="/clientes" class="btn btn-secondary">Cancelar</a>
         </div>
     </form>
-    </div>
-    <script>
-        const inputFoto = document.getElementById("foto")
-        const previewFoto = document.getElementById("preview-foto")
-        inputFoto.addEventListener("input", () => {
-            previewFoto.src = inputFoto.value || "https://placehold.co/90x90?text=Foto"
-        })
-    </script>`
+    </div>`
 
 return createPage("Nuevo Escritor", html, null, true, "clientes")
 }

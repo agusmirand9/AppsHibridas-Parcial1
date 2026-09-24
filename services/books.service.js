@@ -5,6 +5,8 @@ const MONGO_URI ="mongodb+srv://admin:admin@ah20232cp1.3imlc0v.mongodb.net/?appN
 const cliente = new MongoClient(MONGO_URI)
 const db = cliente.db("AH20232CP1")
 
+const CAMPOS_LIBRO = ["title", "authors", "categories", "thumbnail", "link", "description", "published_year", "average_rating"]
+
 
 function normalizarLibro(libro) {
     if (libro.published_year !== undefined) {
@@ -17,9 +19,6 @@ function normalizarLibro(libro) {
     }
     return libro
 }
-
-
-const CAMPOS_LIBRO = ["title", "authors", "categories", "thumbnail", "link", "description", "published_year", "average_rating"]
 
 function filtroActivo(id) {
     return { _id: new ObjectId(id), eliminado: { $ne: true } }

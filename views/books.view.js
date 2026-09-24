@@ -49,7 +49,7 @@ export function createDetailPage(libro, volver = "/libros") {
     html += `<div style="flex:1; min-width:280px;">`
     html += `<div class="detail-title">${libro.title}</div>`
     html += `<div class="detail-author">${libro.authors}</div>`
-    html += `<p class="fst-italic">${libro.description ? libro.description.slice(0, 160) : ""}${libro.description && libro.description.length > 160 ? "..." : ""}</p>`
+    html += `<p class="fst-italic">${libro.description }</p>`
 
     html += `
     <div class="d-flex gap-2 mt-3">
@@ -121,14 +121,7 @@ export function newBookForm(clientes = []) {
             <a href="/libros" class="btn btn-secondary">Cancelar</a>
         </div>
     </form>
-    </div>
-    <script>
-        const inputThumb = document.getElementById("thumbnail")
-        const previewThumb = document.getElementById("preview-thumbnail")
-        inputThumb.addEventListener("input", () => {
-            previewThumb.src = inputThumb.value || "https://placehold.co/110x150?text=Portada"
-        })
-    </script>`
+    </div>`
 
 return createPage("Nuevo Libro", html, null, true, "libros")
 }
@@ -168,14 +161,7 @@ export function editBookForm(libro, clientes = []) {
             <a href="/libros/${libro._id}" class="btn btn-secondary">Cancelar</a>
         </div>
     </form>
-    </div>
-    <script>
-        const inputThumb = document.getElementById("thumbnail")
-        const previewThumb = document.getElementById("preview-thumbnail")
-        inputThumb.addEventListener("input", () => {
-            previewThumb.src = inputThumb.value || "https://placehold.co/110x150?text=Portada"
-        })
-    </script>`
+    </div>`
 
 return createPage("Editar Libro", html, null, true, "libros")
 }

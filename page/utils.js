@@ -12,6 +12,7 @@ export function createPage(title, content, categoriaActiva = null, mostrarTitulo
     html += '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">'
     html += `<meta name="viewport" content="width=device-width, initial-scale=1" />`
     html += `<title>${title}</title>`
+    html += `<link rel="icon" type="image/png" href="/mi-icono.png" />`
     html += `<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">`
     html += `<link rel="preconnect" href="https://fonts.googleapis.com">`
     html += `<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Urbanist:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">`
