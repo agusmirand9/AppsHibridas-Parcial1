@@ -23,7 +23,6 @@
     "mongodb": "^7.6.0"
   },
   "devDependencies": {
-    "csv-parse": "^7.0.2",
     "nodemon": "^3.1.14"
   }
 }

@@ -5,33 +5,62 @@ const MONGO_URI ="mongodb+srv://admin:admin@ah20232cp1.3imlc0v.mongodb.net/?appN
 const cliente = new MongoClient(MONGO_URI)
 const db = cliente.db("AH20232CP1")
 
+
+function normalizarLibro(libro) {
+    if (libro.published_year !== undefined) {
+        const year = parseInt(libro.published_year)
+        libro.published_year = isNaN(year) ? null : year
+    }
+    if (libro.average_rating !== undefined) {
+        const rating = parseFloat(libro.average_rating)
+        libro.average_rating = isNaN(rating) ? null : rating
+    }
+    return libro
+}
+
+
+const CAMPOS_LIBRO = ["title", "authors", "categories", "thumbnail", "link", "description", "published_year", "average_rating"]
+
+function filtroActivo(id) {
+    return { _id: new ObjectId(id), eliminado: { $ne: true } }
+}
+
+export function limpiarLibro(body, { parcial = false } = {}) {
+    const libro = {}
+    for (const campo of CAMPOS_LIBRO) {
+        if (parcial && body[campo] === undefined) continue
+        libro[campo] = body[campo]
+    }
+    return libro
+}
+
+
+
 export async function getBooks (filtros = {}) {
     const filter = { eliminado: {$ne: true}}
 
     const page = parseInt(filtros.page) || 1
-    const limit = parseInt(filtros.limit) || 10
+    const limit = parseInt(filtros.limit) || 50
     const skip = (page - 1) * limit
 
     if (filtros?.categories) filter.categories = { $regex: filtros.categories, $options: "i" }
-
     if (filtros?.title) filter.title = { $regex: filtros.title, $options: "i" }
 
     const total = await db.collection("libros").countDocuments(filter)
     const libros = await db.collection("libros").find(filter).skip(skip).limit(limit).toArray()
     const totalPaginas = Math.ceil(total / limit)
-    libros.push({ totalDocumentos: total, totalPaginas: totalPaginas})
 
-    return libros
+    return { libros, totalDocumentos: total, totalPaginas }
 }
 
 
 export async function getBookById(id) {
-    return await db.collection("libros").findOne({ _id: new ObjectId(id) })
-        
+    return await db.collection("libros").findOne(filtroActivo(id))
 }
 
 
 export async function saveBook(libro, clienteId) {
+    normalizarLibro(libro)
     libro.eliminado = false
     if (clienteId) {
         const cliente = await db.collection("clientes").findOne({ _id: new ObjectId(clienteId) })
@@ -43,32 +72,43 @@ export async function saveBook(libro, clienteId) {
     return libro
 }
 
-export async function replaceBook(libro, id){
+export async function replaceBook(libro, id, clienteId) {
+    normalizarLibro(libro)
     libro.eliminado = false
-    await db.collection("libros").replaceOne(
-        { _id: new ObjectId(id) },
-        libro
-    
-    )
-    return libro
+    if (clienteId) {
+        const cliente = await db.collection("clientes").findOne({ _id: new ObjectId(clienteId) })
+        if (cliente) libro.cliente = { _id: cliente._id, nombre: cliente.nombre, foto: cliente.foto }
+    }
+    const resultado = await db.collection("libros").replaceOne(
+    filtroActivo(id),       
+    libro
+)
+    if (resultado.matchedCount === 0) return null
+    return await getBookById(id)
 }
 
-export async function deleteBookLogic(id){
-    const libro = await getBookById(id)
+export async function deleteBookLogic(id) {
+    const libro = await getBookById(id)     
+    if (!libro) return null               
     await db.collection("libros").updateOne(
-        { _id: new ObjectId(id) },
+        filtroActivo(id),
         { $set: { eliminado: true } }
     )
     return libro
 }
 
 
-export async function updateBook(libro, id) {
+export async function updateBook(libro, id, clienteId) {
+    normalizarLibro(libro)
+    if (clienteId) {
+        const cliente = await db.collection("clientes").findOne({ _id: new ObjectId(clienteId) })
+        if (cliente) libro.cliente = { _id: cliente._id, nombre: cliente.nombre, foto: cliente.foto }
+    }
     await db.collection("libros").updateOne(
-        { _ide: new ObjectId(id) },
-        { $set: libro}
-    )
-    return getBookById
+    filtroActivo(id),         
+    { $set: libro }
+)
+    return await getBookById(id)
 }
 
 export async function getBooksByClient(clienteId) {
