@@ -8,33 +8,6 @@ const db = cliente.db("AH20232CP1")
 const CAMPOS_LIBRO = ["title", "authors", "categories", "thumbnail", "link", "description", "published_year", "average_rating"]
 
 
-function normalizarLibro(libro) {
-    if (libro.published_year !== undefined) {
-        const year = parseInt(libro.published_year)
-        libro.published_year = isNaN(year) ? null : year
-    }
-    if (libro.average_rating !== undefined) {
-        const rating = parseFloat(libro.average_rating)
-        libro.average_rating = isNaN(rating) ? null : rating
-    }
-    return libro
-}
-
-function filtroActivo(id) {
-    return { _id: new ObjectId(id), eliminado: { $ne: true } }
-}
-
-export function limpiarLibro(body, { parcial = false } = {}) {
-    const libro = {}
-    for (const campo of CAMPOS_LIBRO) {
-        if (parcial && body[campo] === undefined) continue
-        libro[campo] = body[campo]
-    }
-    return libro
-}
-
-
-
 export async function getBooks (filtros = {}) {
     const filter = { eliminado: {$ne: true}}
 
@@ -113,4 +86,29 @@ export async function updateBook(libro, id, clienteId) {
 export async function getBooksByClient(clienteId) {
     const filter = { eliminado: { $ne: true }, "cliente._id": new ObjectId(clienteId) }
     return await db.collection("libros").find(filter).toArray()
+}
+
+function normalizarLibro(libro) {
+    if (libro.published_year !== undefined) {
+        const year = parseInt(libro.published_year)
+        libro.published_year = isNaN(year) ? null : year
+    }
+    if (libro.average_rating !== undefined) {
+        const rating = parseFloat(libro.average_rating)
+        libro.average_rating = isNaN(rating) ? null : rating
+    }
+    return libro
+}
+
+function filtroActivo(id) {
+    return { _id: new ObjectId(id), eliminado: { $ne: true } }
+}
+
+export function limpiarLibro(body, { parcial = false } = {}) {
+    const libro = {}
+    for (const campo of CAMPOS_LIBRO) {
+        if (parcial && body[campo] === undefined) continue
+        libro[campo] = body[campo]
+    }
+    return libro
 }
