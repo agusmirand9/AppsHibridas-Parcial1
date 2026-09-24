@@ -28,7 +28,7 @@ export function newClientForm() {
                 <div class="field">
                     <label for="foto">URL de la foto</label>
                     <input class="form-control" type="text" id="foto" name="foto" />
-                    <span class="field-hint">Pegá un link de imagen, por ejemplo de picsum.photos</span>
+                    <span class="field-hint">Pegá un link de imagen</span>
                 </div>
             </div>
         </div>
@@ -61,7 +61,7 @@ export function createClientBooksPage(cliente, libros) {
     </div>`
 
     if (libros.length === 0) {
-        html += `<div class="empty-state">Todavía no tiene libros asignados.</div>`
+        html += `<div class="empty-state">Todavía no tenes libros asignados.</div>`
     } else {
         html += `<div class="book-grid">`
         libros.forEach(libro => {

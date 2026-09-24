@@ -81,7 +81,8 @@ export function createDetailPage(libro, volver = "/libros") {
 
     html += `</div></div>`
 
-return createPage(libro.title, html, null, false, "libros")
+
+    return createPage(libro.title, html, null, false, "libros")
 }
 
 export function pageError(titulo, error) {
@@ -97,7 +98,7 @@ export function newBookForm(clientes = []) {
         <div class="field-with-preview">
             <img id="preview-thumbnail" class="image-preview" src="https://placehold.co/110x150?text=Portada" alt="Vista previa" />
             <div style="flex:1">
-                ${campoTexto("thumbnail", "URL de la portada", "text", "", "Pegá un link de imagen, por ejemplo de Google Books o picsum.photos")}
+                ${campoTexto("thumbnail", "URL de la portada", "text", "", "Pega un link de imagen")}
             </div>
         </div>
         <div class="form-grid">
@@ -107,14 +108,14 @@ export function newBookForm(clientes = []) {
             <div class="field">
                 <label for="clienteId">Escritor asignado</label>
                 <select class="form-select" id="clienteId" name="clienteId">
-                    <option value="">-- Sin asignar --</option>
+                    <option value="">Sin asignar</option>
                     ${opcionesClientes}
                 </select>
             </div>
             ${campoNumero("published_year", "Año de publicación")}
             ${campoNumero("average_rating", "Rating promedio", "0.1")}
         </div>
-        ${campoTexto("link", "Link a Google Books", "text", "", "URL completa, empezando con https://")}
+        ${campoTexto("link", "Link a Google Books", "text", "", "URL completa")}
         ${campoTexto("description", "Descripción", "textarea")}
         <div class="form-actions">
             <button type="submit" class="btn btn-primary">Guardar libro</button>
@@ -123,7 +124,7 @@ export function newBookForm(clientes = []) {
     </form>
     </div>`
 
-return createPage("Nuevo Libro", html, null, true, "libros")
+    return createPage("Nuevo Libro", html, null, true, "libros")
 }
 
 export function editBookForm(libro, clientes = []) {
@@ -137,7 +138,7 @@ export function editBookForm(libro, clientes = []) {
         <div class="field-with-preview">
             <img id="preview-thumbnail" class="image-preview" src="${libro.thumbnail || 'https://placehold.co/110x150?text=Portada'}" alt="Vista previa" />
             <div style="flex:1">
-                ${campoTexto("thumbnail", "URL de la portada", "text", libro.thumbnail, "Pegá un link de imagen, por ejemplo de Google Books o picsum.photos")}
+                ${campoTexto("thumbnail", "URL de la portada", "text", libro.thumbnail, "Pega un link de imagen")}
             </div>
         </div>
         <div class="form-grid">
@@ -147,14 +148,14 @@ export function editBookForm(libro, clientes = []) {
             <div class="field">
                 <label for="clienteId">Escritor asignado</label>
                 <select class="form-select" id="clienteId" name="clienteId">
-                    <option value="">-- Sin asignar --</option>
+                    <option value="">Sin asignar</option>
                     ${opcionesClientes}
                 </select>
             </div>
             ${campoNumero("published_year", "Año de publicación", "1", libro.published_year)}
             ${campoNumero("average_rating", "Rating promedio", "0.1", libro.average_rating)}
         </div>
-        ${campoTexto("link", "Link a Google Books", "text", libro.link, "URL completa, empezando con https://")}
+        ${campoTexto("link", "Link a Google Books", "text", libro.link, "URL completa")}
         ${campoTexto("description", "Descripción", "textarea", libro.description)}
         <div class="form-actions">
             <button type="submit" class="btn btn-primary">Guardar cambios</button>
@@ -163,7 +164,7 @@ export function editBookForm(libro, clientes = []) {
     </form>
     </div>`
 
-return createPage("Editar Libro", html, null, true, "libros")
+    return createPage("Editar Libro", html, null, true, "libros")
 }
 
 export function deleteBookForm(libro) {
@@ -212,7 +213,7 @@ function campoCategoria(seleccionada = "") {
     return `<div class="field">
         <label for="categories">Categoría</label>
         <select class="form-select" id="categories" name="categories" required>
-            <option value="">-- Elegí una categoría --</option>
+            <option value="">Elegí una categoría</option>
             ${opciones}
         </select>
     </div>`
